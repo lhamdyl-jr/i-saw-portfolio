@@ -1,87 +1,949 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="I SAW. — An independent photography journal. How lucky to have seen.">
-  <title>I SAW. — Photography Journal</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#24291f">
+<title>I SAW — A Photographic Archive</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #f3f1e9;
+  --white: #fffefa;
+  --dark: #24291f;
+  --olive: #737d5d;
+  --muted: #85857b;
+  --line: #deddd4;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--dark);
+  font-family: var(--sans);
+}
+
+button, a { font: inherit; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; }
+
+/* NAVIGATION */
+
+nav {
+  height: 76px;
+  padding: 0 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+  position: relative;
+  z-index: 10;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 21px;
+  letter-spacing: 5px;
+}
+
+.logo span { color: var(--olive); }
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+
+.nav-right a {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.nav-right a:hover { color: var(--olive); }
+
+/* HERO */
+
+.hero {
+  min-height: 670px;
+  padding: 100px 10%;
+  background: var(--dark);
+  color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "I";
+  position: absolute;
+  right: 9%;
+  top: -150px;
+  font-family: var(--serif);
+  font-size: 720px;
+  line-height: 1;
+  color: rgba(255,255,255,.025);
+  pointer-events: none;
+}
+
+.eyebrow {
+  color: #aab294;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 4px;
+  margin-bottom: 35px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(100px, 19vw, 230px);
+  font-weight: 400;
+  line-height: .85;
+  letter-spacing: -9px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero h1 em {
+  color: #aab294;
+  font-weight: 400;
+}
+
+.hero-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-top: 85px;
+  position: relative;
+  z-index: 1;
+}
+
+.tagline {
+  font-family: var(--serif);
+  font-size: clamp(18px, 2.4vw, 27px);
+  font-style: italic;
+  color: #d1d2c8;
+}
+
+.hero-caption {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #aab294;
+  text-transform: uppercase;
+}
+
+/* INTRODUCTION */
+
+.intro {
+  padding: 125px 10%;
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 90px;
+  align-items: center;
+}
+
+.label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--olive);
+  text-transform: uppercase;
+}
+
+.intro h2 {
+  font-family: var(--serif);
+  font-size: clamp(42px, 5vw, 67px);
+  font-weight: 400;
+  line-height: 1.15;
+  margin-top: 25px;
+}
+
+.intro h2 em { color: var(--olive); }
+
+.intro p {
+  font-size: 13px;
+  line-height: 2.2;
+  color: #77776e;
+  max-width: 430px;
+}
+
+/* COLLECTIONS */
+
+.collections {
+  padding: 105px 7%;
+  background: var(--white);
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 60px;
+}
+
+.section-heading h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(48px, 7vw, 82px);
+  margin-top: 15px;
+}
+
+.section-heading p {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 45px 25px;
+}
+
+.album-card {
+  cursor: pointer;
+  min-width: 0;
+}
+
+.album-cover {
+  height: 450px;
+  background: #e8e6dd;
+  overflow: hidden;
+  position: relative;
+}
+
+.album-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .8s cubic-bezier(.2,.7,.2,1);
+}
+
+.album-card:hover .album-cover img {
+  transform: scale(1.045);
+}
+
+.album-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 75%, rgba(0,0,0,.15));
+  pointer-events: none;
+}
+
+.cover-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--serif);
+  font-size: 35px;
+  font-style: italic;
+  color: #9a9c8d;
+}
+
+.album-details {
+  padding: 23px 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.album-details h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 28px;
+}
+
+.album-details span {
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+/* ALBUM VIEW */
+
+.album-view {
+  display: none;
+  padding: 80px 7%;
+  background: var(--white);
+  min-height: 600px;
+}
+
+.album-view.active { display: block; }
+
+.album-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 55px;
+}
+
+.album-header h2 {
+  font-family: var(--serif);
+  font-size: clamp(48px, 7vw, 85px);
+  font-weight: 400;
+  margin-top: 12px;
+}
+
+.album-count {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  margin-top: 12px;
+}
+
+.back-button {
+  padding: 14px 20px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--dark);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: .3s;
+}
+
+.back-button:hover {
+  background: var(--dark);
+  color: white;
+}
+
+/* MASONRY */
+
+.photo-grid {
+  columns: 3;
+  column-gap: 18px;
+}
+
+.photo-item {
+  display: block;
+  width: 100%;
+  margin-bottom: 18px;
+  break-inside: avoid;
+  overflow: hidden;
+  cursor: zoom-in;
+  background: var(--bg);
+}
+
+.photo-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform .6s ease;
+}
+
+.photo-item:hover img {
+  transform: scale(1.025);
+}
+
+.status-message {
+  padding: 35px 0;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+/* ABOUT */
+
+.about {
+  padding: 125px 10%;
+  background: var(--dark);
+  color: var(--bg);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.about .label { color: #aab294; }
+
+.about h2 {
+  font-family: var(--serif);
+  font-size: clamp(55px, 8vw, 95px);
+  font-weight: 400;
+  line-height: 1;
+  margin-top: 25px;
+}
+
+.about h2 em { color: #aab294; }
+
+.about p {
+  color: #c2c4b9;
+  font-size: 13px;
+  line-height: 2.3;
+  max-width: 440px;
+}
+
+/* FOOTER */
+
+footer {
+  background: #171a14;
+  color: #a6a99b;
+  padding: 35px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+.footer-logo {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  color: var(--bg);
+}
+
+/* LIGHTBOX */
+
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(12,14,10,.97);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 65px;
+}
+
+.lightbox.active { display: flex; }
+
+.lightbox img {
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+}
+
+.lightbox button {
+  position: absolute;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 32px;
+}
+
+.close-lightbox {
+  top: 18px;
+  right: 28px;
+}
+
+.prev-photo {
+  left: 20px;
+}
+
+.next-photo {
+  right: 20px;
+}
+
+.lightbox-counter {
+  position: absolute;
+  bottom: 20px;
+  color: #bbb;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 750px) {
+  nav {
+    padding: 0 6%;
+    height: 68px;
+  }
+
+  .nav-right { gap: 17px; }
+  .nav-right a { font-size: 9px; }
+
+  .hero {
+    min-height: 520px;
+    padding: 80px 7%;
+  }
+
+  .hero h1 { letter-spacing: -6px; }
+
+  .hero-bottom { margin-top: 65px; }
+  .hero-caption { font-size: 8px; }
+
+  .intro {
+    padding: 85px 7%;
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .collections { padding: 80px 5%; }
+
+  .album-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .album-cover { height: 390px; }
+
+  .album-view { padding: 65px 5%; }
+
+  .photo-grid {
+    columns: 2;
+    column-gap: 12px;
+  }
+
+  .photo-item { margin-bottom: 12px; }
+
+  .about {
+    padding: 85px 7%;
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  footer {
+    padding: 30px 6%;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .lightbox { padding: 40px 35px; }
+}
+
+@media(max-width: 390px) {
+  .photo-grid { columns: 1; }
+  .hero h1 { font-size: 95px; }
+}
+</style>
 </head>
+
 <body>
-  <header class="topbar">
-    <a class="wordmark" href="#top">I SAW.</a>
-    <nav aria-label="Main navigation">
-      <a href="#work">WORK</a>
-      <a href="#about">ABOUT</a>
-      <a href="#contact">CONTACT</a>
-    </nav>
-  </header>
 
-  <main id="top">
-    <section class="intro">
-      <p class="eyebrow">AN INDEPENDENT PHOTOGRAPHY JOURNAL</p>
-      <h1>I SAW<span>.</span></h1>
-      <p class="tagline">How lucky to have seen.</p>
-      <p class="intro-note">A personal collection of moments, places and passing light.</p>
-    </section>
+<nav>
+  <a class="logo" href="#">I <span>SAW.</span></a>
 
-    <section class="feature">
-      <img src="images/cover.jpg" alt="Featured photograph">
-      <div class="feature-caption">
-        <span>SELECTED WORKS</span>
-        <span>2026 — ONGOING</span>
-      </div>
-    </section>
+  <div class="nav-right">
+    <a href="#albums">Collections</a>
+    <a href="#about">About</a>
+  </div>
+</nav>
 
-    <section id="work" class="work-section">
-      <div class="section-heading">
-        <p class="eyebrow">THE ARCHIVE</p>
-        <h2>Things I’ve seen</h2>
-      </div>
+<header class="hero">
+  <div class="eyebrow">Photography · Personal Archive</div>
 
-      <div class="gallery">
-       <a class="gallery-item" href="images/portraits/IMG_8875.jpeg">
-    <img src="images/portraits/IMG_8875.jpeg" alt="Portrait photograph">
-    <span class="photo-label">01 / PORTRAITS</span>
-</a>
+  <h1>I <em>SAW.</em></h1>
 
-<a class="gallery-item" href="images/portraits/IMG_8876.jpeg">
-    <img src="images/portraits/IMG_8876.jpeg" alt="Portrait photograph">
-    <span class="photo-label">02 / PORTRAITS</span>
-</a>
+  <div class="hero-bottom">
+    <div class="tagline">How lucky to have seen.</div>
+    <div class="hero-caption">A collection of moments</div>
+  </div>
+</header>
 
-<a class="gallery-item" href="images/portraits/IMG_8880.jpeg">
-    <img src="images/portraits/IMG_8880.jpeg" alt="Portrait photograph">
-    <span class="photo-label">03 / PORTRAITS</span>
-</a> 
-      </div>
-      <p class="gallery-note">More photographs will find their place here.</p>
-    </section>
+<section class="intro">
+  <div>
+    <div class="label">01 — The perspective</div>
+    <h2>Some moments deserve to <em>stay.</em></h2>
+  </div>
 
-    <section id="about" class="about-section">
-      <p class="eyebrow">A NOTE FROM BEHIND THE CAMERA</p>
+  <p>
+    A personal collection of things I have seen,
+    places I have been and people I have encountered.
+
+    Every photograph holds a moment that once existed.
+  </p>
+</section>
+
+<section class="collections" id="albums">
+
+  <div id="album-list">
+
+    <div class="section-heading">
       <div>
-        <h2>To notice<br><em>is to keep.</em></h2>
-        <p>This is a growing visual journal of things worth looking at twice. People, places, light and ordinary moments that somehow stay.</p>
+        <div class="label">02 — Selected photographs</div>
+        <h2>The archives.</h2>
       </div>
-    </section>
+      <p>Four collections · One perspective</p>
+    </div>
 
-    <section id="contact" class="contact-section">
-      <p class="eyebrow">SAY HELLO</p>
-      <h2>Have something<br>in mind?</h2>
-      <a class="contact-link" href="mailto:hello@example.com">GET IN TOUCH ↗</a>
-      <p class="email-note">Replace this email address with your own in index.html.</p>
-    </section>
-  </main>
+    <div class="album-grid">
 
-  <footer>
-    <span>I SAW. — PHOTOGRAPHY JOURNAL</span>
-    <span>HOW LUCKY TO HAVE SEEN.</span>
-    <span>© 2026</span>
-  </footer>
-  <script src="script.js"></script>
+      <article class="album-card" onclick="openAlbum('portraits')">
+        <div class="album-cover">
+          <div class="cover-placeholder">Portraits</div>
+          <img data-cover="portraits" alt="Portraits">
+        </div>
+        <div class="album-details">
+          <h3>Portraits</h3>
+          <span>01 / COLLECTION</span>
+        </div>
+      </article>
+
+      <article class="album-card" onclick="openAlbum('people')">
+        <div class="album-cover">
+          <div class="cover-placeholder">People</div>
+          <img data-cover="people" alt="People">
+        </div>
+        <div class="album-details">
+          <h3>People</h3>
+          <span>02 / COLLECTION</span>
+        </div>
+      </article>
+
+      <article class="album-card" onclick="openAlbum('nature')">
+        <div class="album-cover">
+          <div class="cover-placeholder">Nature</div>
+          <img data-cover="nature" alt="Nature">
+        </div>
+        <div class="album-details">
+          <h3>Nature</h3>
+          <span>03 / COLLECTION</span>
+        </div>
+      </article>
+
+      <article class="album-card" onclick="openAlbum('places')">
+        <div class="album-cover">
+          <div class="cover-placeholder">Places</div>
+          <img data-cover="places" alt="Places">
+        </div>
+        <div class="album-details">
+          <h3>Places</h3>
+          <span>04 / COLLECTION</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <div class="album-view" id="album-view">
+
+    <div class="album-header">
+      <div>
+        <div class="label">THE COLLECTION</div>
+        <h2 id="album-title">Portraits</h2>
+        <div class="album-count" id="album-count"></div>
+      </div>
+
+      <button class="back-button" onclick="closeAlbum()">
+        ← All collections
+      </button>
+    </div>
+
+    <div class="photo-grid" id="photo-grid"></div>
+
+    <div class="status-message" id="status-message">
+      Loading photographs...
+    </div>
+
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div>
+    <div class="label">03 — About</div>
+    <h2>Through my <em>eyes.</em></h2>
+  </div>
+
+  <p>
+    I SAW is a personal photographic archive.
+
+    A place for moments, details, faces and places
+    worth remembering.
+
+    <br><br>
+
+    Not everything needs an explanation.
+    Sometimes seeing is enough.
+  </p>
+</section>
+
+<footer>
+  <div class="footer-logo">I SAW.</div>
+  <div>HOW LUCKY TO HAVE SEEN.</div>
+  <div>© 2026</div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+
+  <button class="close-lightbox" onclick="closeLightbox()">×</button>
+  <button class="prev-photo" onclick="changePhoto(-1)">‹</button>
+
+  <img id="lightbox-img" src="" alt="Photograph">
+
+  <button class="next-photo" onclick="changePhoto(1)">›</button>
+
+  <div class="lightbox-counter" id="lightbox-counter"></div>
+
+</div>
+
+<script>
+
+/* CONFIGURATION */
+
+const albums = {
+  portraits: "Portraits",
+  people: "People",
+  nature: "Nature",
+  places: "Places"
+};
+
+const extensions = ["jpg", "jpeg", "png", "webp"];
+
+let currentPhotos = [];
+let currentPhotoIndex = 0;
+let scanToken = 0;
+
+/* IMAGE DETECTION */
+
+function findImage(folder, number) {
+
+  return new Promise(resolve => {
+
+    let extIndex = 0;
+
+    function check() {
+
+      if (extIndex >= extensions.length) {
+        resolve(null);
+        return;
+      }
+
+      const path =
+        `images/${folder}/${number}.${extensions[extIndex]}`;
+
+      const img = new Image();
+
+      img.onload = () => resolve(path);
+
+      img.onerror = () => {
+        extIndex++;
+        check();
+      };
+
+      img.src = path;
+    }
+
+    check();
+
+  });
+}
+
+/* LOAD ALBUM COVERS */
+
+async function loadCovers() {
+
+  for (const folder of Object.keys(albums)) {
+
+    const path = await findImage(folder, 1);
+
+    if (!path) continue;
+
+    const cover = document.querySelector(
+      `[data-cover="${folder}"]`
+    );
+
+    cover.src = path;
+
+    const placeholder = cover.parentElement.querySelector(
+      ".cover-placeholder"
+    );
+
+    placeholder.style.display = "none";
+  }
+
+}
+
+/* OPEN AN ALBUM */
+
+async function openAlbum(name) {
+
+  const token = ++scanToken;
+
+  document.getElementById("album-list").style.display = "none";
+
+  const view = document.getElementById("album-view");
+
+  view.classList.add("active");
+
+  document.getElementById("album-title").textContent =
+    albums[name];
+
+  const grid = document.getElementById("photo-grid");
+
+  const status = document.getElementById("status-message");
+
+  const count = document.getElementById("album-count");
+
+  grid.innerHTML = "";
+  count.textContent = "";
+  status.style.display = "block";
+  status.textContent = "Loading photographs...";
+
+  currentPhotos = [];
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  let number = 1;
+  let missing = 0;
+
+  while (number <= 150 && missing < 4) {
+
+    if (token !== scanToken) return;
+
+    const path = await findImage(name, number);
+
+    if (token !== scanToken) return;
+
+    if (path) {
+
+      missing = 0;
+
+      currentPhotos.push(path);
+
+      const item = document.createElement("div");
+      item.className = "photo-item";
+
+      const img = document.createElement("img");
+      img.src = path;
+      img.alt = albums[name] + " photograph " + number;
+      img.loading = "lazy";
+
+      item.appendChild(img);
+
+      const photoIndex = currentPhotos.length - 1;
+
+      item.addEventListener("click", () => {
+        showLightbox(photoIndex);
+      });
+
+      grid.appendChild(item);
+
+    } else {
+
+      missing++;
+
+    }
+
+    number++;
+
+  }
+
+  if (token !== scanToken) return;
+
+  status.style.display = "none";
+
+  count.textContent =
+    currentPhotos.length + " PHOTOGRAPHS";
+
+  if (currentPhotos.length === 0) {
+    status.style.display = "block";
+    status.textContent =
+      "No photographs found. Check your folder and filenames.";
+  }
+
+}
+
+/* CLOSE ALBUM */
+
+function closeAlbum() {
+
+  scanToken++;
+
+  document.getElementById("album-view").classList.remove("active");
+
+  document.getElementById("album-list").style.display = "block";
+
+  window.scrollTo({ top: document.getElementById("albums").offsetTop, behavior: "smooth" });
+
+}
+
+/* LIGHTBOX */
+
+function showLightbox(index) {
+
+  currentPhotoIndex = index;
+
+  updateLightbox();
+
+  document.getElementById("lightbox").classList.add("active");
+
+  document.body.style.overflow = "hidden";
+
+}
+
+function updateLightbox() {
+
+  const img = document.getElementById("lightbox-img");
+
+  img.src = currentPhotos[currentPhotoIndex];
+
+  document.getElementById("lightbox-counter").textContent =
+    `${currentPhotoIndex + 1} / ${currentPhotos.length}`;
+
+}
+
+function closeLightbox() {
+
+  document.getElementById("lightbox").classList.remove("active");
+
+  document.body.style.overflow = "";
+
+}
+
+function changePhoto(direction) {
+
+  currentPhotoIndex =
+    (currentPhotoIndex + direction + currentPhotos.length)
+    % currentPhotos.length;
+
+  updateLightbox();
+
+}
+
+/* KEYBOARD NAVIGATION */
+
+document.addEventListener("keydown", event => {
+
+  const lightbox = document.getElementById("lightbox");
+
+  if (!lightbox.classList.contains("active")) return;
+
+  if (event.key === "Escape") closeLightbox();
+  if (event.key === "ArrowRight") changePhoto(1);
+  if (event.key === "ArrowLeft") changePhoto(-1);
+
+});
+
+/* CLOSE WHEN CLICKING OUTSIDE THE PHOTO */
+
+document.getElementById("lightbox").addEventListener("click", event => {
+
+  if (event.target.id === "lightbox") {
+    closeLightbox();
+  }
+
+});
+
+/* START */
+
+loadCovers();
+
+</script>
+
 </body>
 </html>
