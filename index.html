@@ -450,13 +450,8 @@ footer {
   right: 28px;
 }
 
-.prev-photo {
-  left: 20px;
-}
-
-.next-photo {
-  right: 20px;
-}
+.prev-photo { left: 20px; }
+.next-photo { right: 20px; }
 
 .lightbox-counter {
   position: absolute;
@@ -702,45 +697,39 @@ const albums = {
   places: "Places"
 };
 
-const extensions = ["jpg", "jpeg", "png", "webp"];
-
 let currentPhotos = [];
 let currentPhotoIndex = 0;
 let scanToken = 0;
 
-/* IMAGE DETECTION */
+/* READ ALBUM IMAGES FROM JSON */
 
-function findImage(folder, number) {
+async function getAlbumImages(folder) {
 
-  return new Promise(resolve => {
+  const response = await fetch(
+    `images/${folder}/images.json`,
+    { cache: "no-cache" }
+  );
 
-    let extIndex = 0;
+  if (!response.ok) {
+    throw new Error(`Cannot load ${folder}/images.json`);
+  }
 
-    function check() {
+  const data = await response.json();
 
-      if (extIndex >= extensions.length) {
-        resolve(null);
-        return;
-      }
+  const files = Array.isArray(data)
+    ? data
+    : data.images || data.photos || [];
 
-      const path =
-        `images/${folder}/${number}.${extensions[extIndex]}`;
+  return files.map(file => {
 
-      const img = new Image();
-
-      img.onload = () => resolve(path);
-
-      img.onerror = () => {
-        extIndex++;
-        check();
-      };
-
-      img.src = path;
+    if (typeof file === "string") {
+      return file;
     }
 
-    check();
+    return file.filename || file.name || file.src;
 
-  });
+  }).filter(Boolean);
+
 }
 
 /* LOAD ALBUM COVERS */
@@ -749,21 +738,37 @@ async function loadCovers() {
 
   for (const folder of Object.keys(albums)) {
 
-    const path = await findImage(folder, 1);
+    try {
 
-    if (!path) continue;
+      const files = await getAlbumImages(folder);
 
-    const cover = document.querySelector(
-      `[data-cover="${folder}"]`
-    );
+      if (!files.length) continue;
 
-    cover.src = path;
+      const cover = document.querySelector(
+        `[data-cover="${folder}"]`
+      );
 
-    const placeholder = cover.parentElement.querySelector(
-      ".cover-placeholder"
-    );
+      const placeholder = cover.parentElement.querySelector(
+        ".cover-placeholder"
+      );
 
-    placeholder.style.display = "none";
+      cover.onload = () => {
+        placeholder.style.display = "none";
+      };
+
+      cover.onerror = () => {
+        console.error("Could not load album cover:", cover.src);
+      };
+
+      cover.src =
+        `images/${folder}/${encodeURIComponent(files[0])}`;
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+
   }
 
 }
@@ -777,20 +782,18 @@ async function openAlbum(name) {
   document.getElementById("album-list").style.display = "none";
 
   const view = document.getElementById("album-view");
-
   view.classList.add("active");
 
   document.getElementById("album-title").textContent =
     albums[name];
 
   const grid = document.getElementById("photo-grid");
-
   const status = document.getElementById("status-message");
-
   const count = document.getElementById("album-count");
 
   grid.innerHTML = "";
   count.textContent = "";
+
   status.style.display = "block";
   status.textContent = "Loading photographs...";
 
@@ -798,62 +801,65 @@ async function openAlbum(name) {
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 
-  let number = 1;
-  let missing = 0;
+  try {
 
-  while (number <= 150 && missing < 4) {
-
-    if (token !== scanToken) return;
-
-    const path = await findImage(name, number);
+    const files = await getAlbumImages(name);
 
     if (token !== scanToken) return;
 
-    if (path) {
+    currentPhotos = files.map(file =>
+      `images/${name}/${encodeURIComponent(file)}`
+    );
 
-      missing = 0;
-
-      currentPhotos.push(path);
+    currentPhotos.forEach((path, index) => {
 
       const item = document.createElement("div");
       item.className = "photo-item";
 
       const img = document.createElement("img");
+
       img.src = path;
-      img.alt = albums[name] + " photograph " + number;
+      img.alt = `${albums[name]} photograph ${index + 1}`;
       img.loading = "lazy";
+
+      img.onerror = () => {
+        item.style.display = "none";
+        console.error("Could not load image:", path);
+      };
 
       item.appendChild(img);
 
-      const photoIndex = currentPhotos.length - 1;
-
       item.addEventListener("click", () => {
-        showLightbox(photoIndex);
+        showLightbox(index);
       });
 
       grid.appendChild(item);
 
-    } else {
+    });
 
-      missing++;
+    status.style.display = "none";
+
+    count.textContent =
+      `${currentPhotos.length} PHOTOGRAPHS`;
+
+    if (currentPhotos.length === 0) {
+
+      status.style.display = "block";
+      status.textContent =
+        "No photographs found in this collection.";
 
     }
 
-    number++;
+  } catch (error) {
 
-  }
+    if (token !== scanToken) return;
 
-  if (token !== scanToken) return;
+    console.error(error);
 
-  status.style.display = "none";
-
-  count.textContent =
-    currentPhotos.length + " PHOTOGRAPHS";
-
-  if (currentPhotos.length === 0) {
     status.style.display = "block";
     status.textContent =
-      "No photographs found. Check your folder and filenames.";
+      "Could not load photographs. Check images.json.";
+
   }
 
 }
@@ -868,13 +874,18 @@ function closeAlbum() {
 
   document.getElementById("album-list").style.display = "block";
 
-  window.scrollTo({ top: document.getElementById("albums").offsetTop, behavior: "smooth" });
+  window.scrollTo({
+    top: document.getElementById("albums").offsetTop,
+    behavior: "smooth"
+  });
 
 }
 
 /* LIGHTBOX */
 
 function showLightbox(index) {
+
+  if (!currentPhotos.length) return;
 
   currentPhotoIndex = index;
 
@@ -906,6 +917,8 @@ function closeLightbox() {
 }
 
 function changePhoto(direction) {
+
+  if (!currentPhotos.length) return;
 
   currentPhotoIndex =
     (currentPhotoIndex + direction + currentPhotos.length)
